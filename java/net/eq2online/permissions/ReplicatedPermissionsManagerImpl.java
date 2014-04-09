@@ -63,7 +63,7 @@ public class ReplicatedPermissionsManagerImpl implements ReplicatedPermissionsMa
 		
 		for (ReplicatedPermissionsMappingProvider provider : mappingProviders)
 		{
-			if (!provider.checkVersion(parent, player, data)) return false;
+			if (!provider.checkVersion(parent, player, data) && !player.hasPermission(ReplicatedPermissionsPlugin.ADMIN_PERMISSION_NODE)) return false;
 		}		
 		
 		return true;
