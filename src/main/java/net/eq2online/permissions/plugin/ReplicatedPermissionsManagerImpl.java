@@ -1,9 +1,8 @@
-package net.eq2online.permissions.impl;
+package net.eq2online.permissions.plugin;
 
 import java.util.*;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
-import net.eq2online.permissions.ReplicatedPermissionsPlugin;
 
 import org.bukkit.entity.Player;
 
@@ -52,7 +51,7 @@ public class ReplicatedPermissionsManagerImpl implements ReplicatedPermissionsMa
 	{
 		for (ReplicatedPermissionsMappingProvider provider : this.mappingProviders)
 		{
-			provider.initPermissionsMappingProvider(this.parent.getDataFolder());
+			provider.initPermissionsMappingProvider(this.parent);
 		}
 	}
 	

@@ -1,10 +1,9 @@
-package net.eq2online.permissions.providers;
+package net.eq2online.permissions.plugin.providers;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +13,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
-import net.eq2online.permissions.impl.ReplicatedPermissionsMappingProvider;
+import net.eq2online.permissions.plugin.ReplicatedPermissionsMappingProvider;
 
 /**
  * Permissions mapping provider which 
@@ -24,9 +23,9 @@ import net.eq2online.permissions.impl.ReplicatedPermissionsMappingProvider;
 public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsMappingProvider
 {
 	/**
-	 * Logger
+	 * Parent plugin 
 	 */
-	private static Logger logger = Logger.getLogger("ClientPermissions");
+	private Plugin plugin;
 	
 	/**
 	 * Configuration file for this provider
@@ -52,14 +51,15 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @see net.eq2online.permissions.ReplicatedPermissionsMappingProvider#initPermissionsMappingProvider(java.io.File)
 	 */
 	@Override
-	public void initPermissionsMappingProvider(File dataFolder)
+	public void initPermissionsMappingProvider(Plugin plugin)
 	{
-        this.configFile = new File(dataFolder, "mods.yml");
+		this.plugin = plugin;
+        this.configFile = new File(plugin.getDataFolder(), "mods.yml");
         this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
         if (!this.configFile.exists())
         {
-        	logger.warning("[ClientPermissions] No mods.yml was found in the data directory");
+        	this.plugin.getLogger().warning("No mods.yml was found in the data directory");
         }
 
 		this.config.addDefault("mods", new ArrayList<String>());
@@ -98,7 +98,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	{
 		if (this.modList.contains(data.modName))
 		{
-			float minVersion = getMinModVersion(data.modName);
+			float minVersion = this.getMinModVersion(data.modName);
 			return minVersion <= 0.0F || data.modVersion >= minVersion;
 		}
 		
@@ -140,7 +140,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 		
 		for (String modName : this.modList)
 		{
-			double modVersion = getMinModVersion(modName);
+			double modVersion = this.getMinModVersion(modName);
 			
 			if (modVersion > 0.0F)
 			{
@@ -154,7 +154,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 		}
 		catch (IOException ex)
 		{
-			logger.log(Level.WARNING, "[ClientPermissions] Error saving mods.yml", ex);
+			this.plugin.getLogger().log(Level.WARNING, "Problem saving mods.yml", ex);
 		}
 	}
 

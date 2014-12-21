@@ -1,4 +1,4 @@
-package net.eq2online.permissions.impl;
+package net.eq2online.permissions.plugin;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
 

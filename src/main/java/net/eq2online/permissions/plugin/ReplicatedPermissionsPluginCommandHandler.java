@@ -1,10 +1,9 @@
-package net.eq2online.permissions.impl;
+package net.eq2online.permissions.plugin;
 
 import java.util.*;
 import java.util.Map.Entry;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
-import net.eq2online.permissions.ReplicatedPermissionsPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

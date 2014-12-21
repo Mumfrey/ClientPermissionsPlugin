@@ -1,6 +1,4 @@
-package net.eq2online.permissions;
-
-import java.util.logging.Logger;
+package net.eq2online.permissions.plugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -14,11 +12,8 @@ import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import net.eq2online.permissions.impl.ReplicatedPermissionsManager;
-import net.eq2online.permissions.impl.ReplicatedPermissionsManagerImpl;
-import net.eq2online.permissions.impl.ReplicatedPermissionsMonitor;
-import net.eq2online.permissions.impl.ReplicatedPermissionsPluginCommandHandler;
-import net.eq2online.permissions.providers.PermissionsMappingProviderGeneric;
+import net.eq2online.permissions.ReplicatedPermissionsContainer;
+import net.eq2online.permissions.plugin.providers.PermissionsMappingProviderGeneric;
 
 /**
  * Main Bukkit plugin class for the client permissions system
@@ -31,11 +26,6 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	 * Admin permission node needed for changing plugin settings 
 	 */
 	public static final String ADMIN_PERMISSION_NODE = "clientmods.admin";
-	
-	/**
-	 * Logger
-	 */
-	private static Logger logger = Logger.getLogger("ClientPermissions");
 	
 	/**
 	 * Generic provider (permissions bridge)
@@ -63,13 +53,11 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	@Override
 	public void onEnable()
 	{
-		logger.info("[ClientPermissions] Client mod permissions plugin is starting");
-		
 		// Command handler
 		this.commandHandler = new ReplicatedPermissionsPluginCommandHandler(this);
 		
 		// Monitor
-		this.monitor = new ReplicatedPermissionsMonitor(this.getDataFolder());
+		this.monitor = new ReplicatedPermissionsMonitor(this);
 		
 		// Initialise permission manager
 		this.permissionsManager = new ReplicatedPermissionsManagerImpl(this);
@@ -98,7 +86,7 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if (sender != null && command.getName().equalsIgnoreCase("clientperms") && args.length > 0)
+		if (sender != null && "clientperms".equalsIgnoreCase(command.getName()) && args.length > 0)
 		{
 			return this.commandHandler.onCommand(sender, command, label, args[0], args);
 		}
@@ -153,7 +141,7 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 		{
 			if (!this.permissionsManager.checkVersion(player, query) && !player.hasPermission(ADMIN_PERMISSION_NODE) && !player.isOp())
 			{
-				logger.info("[ClientPermissions] Kicking player [" + player.getName() + "] due to outdated mod [" + query.modName + "]. Has version " + query.modVersion);
+				this.getLogger().info("Kicking player [" + player.getName() + "] due to outdated mod [" + query.modName + "]. Has version " + query.modVersion);
 				player.kickPlayer(String.format("Mod '%s' is out of date", query.modName));
 				
 				return;

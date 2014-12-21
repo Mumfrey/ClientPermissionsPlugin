@@ -1,6 +1,5 @@
-package net.eq2online.permissions.impl;
+package net.eq2online.permissions.plugin;
 
-import java.io.File;
 import java.util.List;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
@@ -29,9 +28,9 @@ public interface ReplicatedPermissionsMappingProvider
 	 * Initialise this provider, the provider can load settings from the supplied
 	 * location.
 	 * 
-	 * @param dataFolder Location to load settings and other ancilliary files from
+	 * @param plugin Parent plugin
 	 */
-	public void initPermissionsMappingProvider(File dataFolder);
+	public void initPermissionsMappingProvider(Plugin plugin);
 
 	/**
 	 * Checks whether this provider can provide permissions mapping for the mod

@@ -1,17 +1,17 @@
-package net.eq2online.permissions.impl;
+package net.eq2online.permissions.plugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import net.eq2online.permissions.ReplicatedPermissionsContainer;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Class which monitors inbound queries in order to store useful information about them.
@@ -21,31 +21,32 @@ import org.bukkit.entity.Player;
 public class ReplicatedPermissionsMonitor
 {
 	/**
-	 * Logger
-	 */
-	private static Logger logger = Logger.getLogger("ClientPermissions");
-	
-	/**
 	 * Data store file for this provider
 	 */
-	private File dataFile;
+	private final File dataFile;
+	
+	/**
+	 * Parent plugin 
+	 */
+	private final Plugin plugin;
 	
 	/**
 	 * Mod information
 	 */
-	private YamlConfiguration data;
+	private final YamlConfiguration data;
 
 	/**
 	 * Mod information received from the remote client, mapped to players 
 	 */
-	private Map<String, Hashtable<String, ReplicatedPermissionsContainer>> playerModInfo = new Hashtable<String, Hashtable<String, ReplicatedPermissionsContainer>>();
+	private final Map<String, Hashtable<String, ReplicatedPermissionsContainer>> playerModInfo = new Hashtable<String, Hashtable<String, ReplicatedPermissionsContainer>>();
 	
 	/**
 	 * @param dataFolder
 	 */
-	public ReplicatedPermissionsMonitor(File dataFolder)
+	public ReplicatedPermissionsMonitor(Plugin plugin)
 	{
-        this.dataFile = new File(dataFolder, "modinfo.yml");
+        this.dataFile = new File(plugin.getDataFolder(), "modinfo.yml");
+        this.plugin = plugin;
         this.data = YamlConfiguration.loadConfiguration(this.dataFile);
         
         String dataFileHeader = "\n";
@@ -89,7 +90,7 @@ public class ReplicatedPermissionsMonitor
 		{
 			if (!this.playerModInfo.containsKey(player.getName()))
 			{
-				logger.warning("[ClientPermissions] Received query from unregistered player " + player.getName());
+				this.plugin.getLogger().warning("Received query from unregistered player " + player.getName());
 				this.playerModInfo.put(player.getName(), new Hashtable<String, ReplicatedPermissionsContainer>());
 			}
 
@@ -138,8 +139,8 @@ public class ReplicatedPermissionsMonitor
 	 */
 	public ConfigurationSection getModVersionSection(String modName, Float modVersion)
 	{
-		ConfigurationSection modSection = getModSection(modName);
-		String modVersionPath = getVersionPath(modVersion);
+		ConfigurationSection modSection = this.getModSection(modName);
+		String modVersionPath = this.getVersionPath(modVersion);
 		ConfigurationSection versionSection = modSection.getConfigurationSection(modVersionPath);
 		if (versionSection == null)
 		{
