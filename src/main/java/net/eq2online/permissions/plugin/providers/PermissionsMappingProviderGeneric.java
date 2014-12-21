@@ -51,7 +51,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @see net.eq2online.permissions.ReplicatedPermissionsMappingProvider#initPermissionsMappingProvider(java.io.File)
 	 */
 	@Override
-	public void initPermissionsMappingProvider(Plugin plugin)
+	public void initProvider(Plugin plugin)
 	{
 		this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), "mods.yml");
@@ -85,7 +85,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @see net.eq2online.permissions.ReplicatedPermissionsProvider#providesPermissionsFor(java.lang.String, float)
 	 */
 	@Override
-	public boolean providesPermissionMappingsFor(ReplicatedPermissionsContainer data)
+	public boolean providesMappingsFor(ReplicatedPermissionsContainer data)
 	{
 		return this.modList.contains(data.modName);
 	}
@@ -164,6 +164,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @param modName
 	 * @return
 	 */
+	@Override
 	public boolean addMod(String modName)
 	{
 		if (modName == null || modName.length() < 1) return false;
@@ -185,6 +186,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @param modName
 	 * @return
 	 */
+	@Override
 	public boolean removeMod(String modName)
 	{
 		if (this.modList.contains(modName))
@@ -202,6 +204,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * 
 	 * @return
 	 */
+	@Override
 	public List<String> getMods()
 	{
 		return Collections.unmodifiableList(this.modList);
@@ -213,6 +216,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @param modName
 	 * @return
 	 */
+	@Override
 	public Float getMinModVersion(String modName)
 	{
 		if (!this.modList.contains(modName)) return 0.0F;
@@ -227,6 +231,7 @@ public class PermissionsMappingProviderGeneric implements ReplicatedPermissionsM
 	 * @param version
 	 * @return
 	 */
+	@Override
 	public boolean setMinModVersion(String modName, Float version)
 	{
 		if (!this.modList.contains(modName)) return false;

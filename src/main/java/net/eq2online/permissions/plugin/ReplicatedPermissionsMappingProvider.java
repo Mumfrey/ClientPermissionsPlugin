@@ -22,7 +22,7 @@ import org.bukkit.plugin.Plugin;
  * 
  * @author Adam Mummery-Smith
  */
-public interface ReplicatedPermissionsMappingProvider
+public interface ReplicatedPermissionsMappingProvider extends ReplicatedPermissionsProvider
 {
 	/**
 	 * Initialise this provider, the provider can load settings from the supplied
@@ -30,7 +30,7 @@ public interface ReplicatedPermissionsMappingProvider
 	 * 
 	 * @param plugin Parent plugin
 	 */
-	public void initPermissionsMappingProvider(Plugin plugin);
+	public abstract void initProvider(Plugin plugin);
 
 	/**
 	 * Checks whether this provider can provide permissions mapping for the mod
@@ -39,7 +39,7 @@ public interface ReplicatedPermissionsMappingProvider
 	 * @param data Client query
 	 * @return True if this provider supports mappings for the specified mod
 	 */
-	public boolean providesPermissionMappingsFor(ReplicatedPermissionsContainer data);
+	public abstract boolean providesMappingsFor(ReplicatedPermissionsContainer data);
 	
 	/**
 	 * This function returns false if the specified mod is supported but does not
@@ -54,7 +54,7 @@ public interface ReplicatedPermissionsMappingProvider
 	 * @param data Mod query data
 	 * @return False if the mod is out of date, otherwise return true.
 	 */
-	public boolean checkVersion(Plugin plugin, Player player, ReplicatedPermissionsContainer data);
+	public abstract boolean checkVersion(Plugin plugin, Player player, ReplicatedPermissionsContainer data);
 	
 	/**
 	 * If the call to providesPermissionMappingsFor() returns true, the manager
@@ -67,5 +67,5 @@ public interface ReplicatedPermissionsMappingProvider
 	 * @param data Mod query data
 	 * @return List of permissions to send back to the client
 	 */
-	public List<String> getPermissions(Plugin plugin, Player player, ReplicatedPermissionsContainer data);
+	public abstract List<String> getPermissions(Plugin plugin, Player player, ReplicatedPermissionsContainer data);
 }

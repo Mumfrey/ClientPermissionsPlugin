@@ -30,7 +30,7 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	/**
 	 * Generic provider (permissions bridge)
 	 */
-	private PermissionsMappingProviderGeneric genericProvider;
+	private ReplicatedPermissionsProvider permissionsProvider;
 
 	/**
 	 * Permissions bridge manager
@@ -77,7 +77,9 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	 */
 	public void addDefaultProviders(ReplicatedPermissionsManager permissionsManager)
 	{
-		permissionsManager.addMappingProvider(this.genericProvider = new PermissionsMappingProviderGeneric());
+		PermissionsMappingProviderGeneric genericProvider = new PermissionsMappingProviderGeneric();
+		this.permissionsProvider = genericProvider;
+		permissionsManager.addMappingProvider(genericProvider);
 	}
 
 	/* (non-Javadoc)
@@ -133,12 +135,13 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 		try
 		{
 			query = ReplicatedPermissionsContainer.fromBytes(message);
-			query.sanitise();
 		}
 		catch (Exception ex) {}
 		
 		if (query != null)
 		{
+			query.sanitise();
+
 			if (!this.permissionsManager.checkVersion(player, query) && !player.hasPermission(ADMIN_PERMISSION_NODE) && !player.isOp())
 			{
 				this.getLogger().info("Kicking player [" + player.getName() + "] due to outdated mod [" + query.modName + "]. Has version " + query.modVersion);
@@ -161,11 +164,11 @@ public class ReplicatedPermissionsPlugin extends JavaPlugin implements Listener,
 	}
 	
 	/**
-	 * @return the genericProvider
+	 * @return the permissions rovider
 	 */
-	public PermissionsMappingProviderGeneric getGenericProvider()
+	public ReplicatedPermissionsProvider getProvider()
 	{
-		return this.genericProvider;
+		return this.permissionsProvider;
 	}
 
 	/**

@@ -51,7 +51,7 @@ public class ReplicatedPermissionsManagerImpl implements ReplicatedPermissionsMa
 	{
 		for (ReplicatedPermissionsMappingProvider provider : this.mappingProviders)
 		{
-			provider.initPermissionsMappingProvider(this.parent);
+			provider.initProvider(this.parent);
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class ReplicatedPermissionsManagerImpl implements ReplicatedPermissionsMa
 		
 		for (ReplicatedPermissionsMappingProvider provider : this.mappingProviders)
 		{
-			if (provider.providesPermissionMappingsFor(data))
+			if (provider.providesMappingsFor(data))
 			{
 				havePermissions = true;
 				

@@ -168,14 +168,14 @@ public class ReplicatedPermissionsPluginCommandHandler
 	{
 		if (sender.hasPermission(ReplicatedPermissionsPlugin.ADMIN_PERMISSION_NODE))
 		{
-			List<String> supportedModList = this.parent.getGenericProvider().getMods();
+			List<String> supportedModList = this.parent.getProvider().getMods();
 			
 			boolean first = true;
 			String reply = ChatColor.GREEN + "Supported mods: ";
 			
 			for (String supportedMod : supportedModList)
 			{
-				Float minVersion = this.parent.getGenericProvider().getMinModVersion(supportedMod);
+				Float minVersion = this.parent.getProvider().getMinModVersion(supportedMod);
 				if (minVersion > 0.0F) supportedMod += "(" + minVersion + ")";
 				
 				if (!first) reply += ", "; first = false;
@@ -200,7 +200,7 @@ public class ReplicatedPermissionsPluginCommandHandler
 			{
 				String modName = args[1].toLowerCase();
 				
-				if (this.parent.getGenericProvider().addMod(modName))
+				if (this.parent.getProvider().addMod(modName))
 				{
 					sender.sendMessage(ChatColor.GREEN + "Added supported mod " + ChatColor.AQUA + modName + ChatColor.GREEN + " successfully");
 				}
@@ -232,7 +232,7 @@ public class ReplicatedPermissionsPluginCommandHandler
 			{
 				String modName = args[1].toLowerCase();
 				
-				if (this.parent.getGenericProvider().removeMod(modName))
+				if (this.parent.getProvider().removeMod(modName))
 				{
 					sender.sendMessage(ChatColor.GREEN + "Removed supported mod " + ChatColor.AQUA + modName + ChatColor.GREEN + " successfully");
 				}
@@ -274,7 +274,7 @@ public class ReplicatedPermissionsPluginCommandHandler
 					
 					if (modVersion > -1)
 					{
-						if (this.parent.getGenericProvider().setMinModVersion(modName, modVersion))
+						if (this.parent.getProvider().setMinModVersion(modName, modVersion))
 						{
 							sender.sendMessage(ChatColor.GREEN + "Updated mod " + ChatColor.AQUA + modName + ChatColor.GREEN + " successfully");
 						}
@@ -285,7 +285,7 @@ public class ReplicatedPermissionsPluginCommandHandler
 					}
 				}
 					
-				float minModVersion = this.parent.getGenericProvider().getMinModVersion(modName);
+				float minModVersion = this.parent.getProvider().getMinModVersion(modName);
 				String strMinModVersion = (minModVersion > 0.0F) ? String.valueOf(minModVersion) : "none"; 
 				sender.sendMessage(ChatColor.GREEN + "Mod: " + ChatColor.AQUA + modName + ChatColor.GREEN + " requires minimum version " + ChatColor.AQUA + strMinModVersion);
 			}
