@@ -10,26 +10,14 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>bukkit</name>
-			<type>2</type>
-			<locationURI>MCP_LOC/bukkit</locationURI>
-		</link>
-		<link>
-			<name>src</name>
-			<type>2</type>
-			<locationURI>MCP_LOC/src</locationURI>
-		</link>
-	</linkedResources>
-	<variableList>
-		<variable>
-			<name>MCP_LOC</name>
-			<value>$%7BPARENT-1-WORKSPACE_LOC%7D</value>
-		</variable>
-	</variableList>
 </projectDescription>

@@ -1,0 +1,9 @@
+name: ClientPermissions
+main: net.eq2online.permissions.ReplicatedPermissionsPlugin
+version: ${project.version}
+description: "\xa7bReplicates server permissions to control supported client side mods"
+commands:
+  clientperms:
+    description: Client mod permission commands
+    usage: "\xa7a/clientperms \xa7b<refresh|query|addmod|removemod|listmods|modversion>"
+    aliases: clps
